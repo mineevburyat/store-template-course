@@ -3,4 +3,4 @@ from django.shortcuts import render, HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello django")
+    return render(request, 'catalog/index.html')
