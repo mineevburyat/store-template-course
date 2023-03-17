@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse
-
+from .models import Product, ProductCategory
 
 # Create your views here.
 def index(request):
@@ -7,10 +7,7 @@ def index(request):
         'title': 'Store - магазин',
     })
 
-def products(request):
-    return render(request, 'catalog/products.html', context={
-        'title': 'Store - продукты',
-        'products': [
+db = [
             {'img': 'vendor/img/products/Adidas-hoodie.png',
              'name': 'Худи черного цвета с монограммами adidas Originals',
              'price': 6090.00,
@@ -42,6 +39,10 @@ def products(request):
              'descript': 'Легкая эластичная ткань сирсакер Фактурная ткань.',
              },
         ]
-            
-        
+
+def products(request):
+    return render(request, 'catalog/products.html', context={
+        'title': 'Store - продукты',
+        'products': Product.objects.all(),
+        'category': ProductCategory.objects.all()
     })
