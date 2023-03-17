@@ -1,8 +1,14 @@
 from django.shortcuts import render
+from .forms import FormAuth
 
 # Create your views here.
 def login(request):
-    return render(request, 'user/login.html')
+    form = FormAuth()
+    return render(request, 
+                  'user/login.html',
+                  context={
+                      'form': form,
+                  })
 
 def register_user(request):
     return render(request, 'user/register.html')
