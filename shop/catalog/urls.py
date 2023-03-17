@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.urls import path
-from .views import index, products
+from .views import products
+
+app_name='product'
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('products', products, name='products')
+    path('', products, name='index')
 ]
