@@ -1,0 +1,22 @@
+[
+  {
+    "model": "catalog.productcategory",
+    "pk": 1,
+    "fields": { "name": "Одежда", "description": "" }
+  },
+  {
+    "model": "catalog.productcategory",
+    "pk": 2,
+    "fields": { "name": "Обувь", "description": "" }
+  },
+  {
+    "model": "catalog.productcategory",
+    "pk": 3,
+    "fields": { "name": "Подарки", "description": null }
+  },
+  {
+    "model": "catalog.productcategory",
+    "pk": 4,
+    "fields": { "name": "Аксессуары", "description": "" }
+  }
+]
