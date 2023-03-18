@@ -23,8 +23,10 @@
                             <div class="card-header"><h3 class="text-center font-weight-light my-4">Создать аккаунт</h3>
                             </div>
                             <div class="card-body">
-                                <form>
-                                    <div class="form-row">
+                                <form method="post" active={% url 'user:register' %}>
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    {% comment %} <div class="form-row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="small mb-1" for="inputFirstName">Имя</label>
@@ -71,7 +73,7 @@
                                                        type="password" placeholder="Подтвердите пароль"/>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> {% endcomment %}
                                     <div class="form-group mt-4 mb-0">
                                         <input class="btn btn-primary btn-block" type="submit" value="Создать аккаунт">
                                     </div>

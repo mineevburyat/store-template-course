@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from .forms import FormAuth
+from .forms import FormAuth, FormRegister
 from django.contrib.auth import authenticate
 from django.urls import reverse
 
@@ -22,7 +22,18 @@ def login(request):
                   })
 
 def register_user(request):
-    return render(request, 'user/register.html')
+    if request.method == 'POST':
+        form = FormRegister(request.POST)
+        if form.is_valid:
+            form.save()
+        return HttpResponseRedirect(reverse('user:login'))
+    else:
+        form = FormRegister
+    return render(request, 
+                  'user/register.html',
+                  context = {
+                      'form': form,
+                  })
 
 def profile(request):
     return render(request, 'user/profile.html')
