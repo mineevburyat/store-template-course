@@ -41,7 +41,7 @@ class FormRegister(UserCreationForm):
             'aria-describedby': "usernameHelp"
         }
     ))
-    email = forms.CharField(widget=forms.EmailField(
+    email = forms.CharField(widget=forms.EmailInput(
         attrs={
             'class': 'form-control py-4',
             'placeholder': 'Введите адрес эл. почты',
