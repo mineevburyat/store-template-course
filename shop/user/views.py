@@ -18,7 +18,7 @@ def login(request):
             else:
                 print('user not find')
         else:
-            print('forms not valid', form, form.errors)
+            print('login forms not valid')
     else:
         form = FormAuth()
     return render(request, 
@@ -32,9 +32,10 @@ def register_user(request):
         form = FormRegister(data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('user:login'))
+        else:
+            print('register form is not valid')
     else:
-        form = FormRegister
+        form = FormRegister()
     return render(request, 
                   'user/register.html',
                   context = {
@@ -50,7 +51,8 @@ def profile(request):
             form.save()
             return HttpResponseRedirect(reverse('user:profile'))
         else:
-            print(form.errors)
+            pass
+            # print(form.errors)
     else:
         if request.user.is_authenticated:
             form = FormChangeProfile(instance=request.user)
