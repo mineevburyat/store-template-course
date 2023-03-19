@@ -57,11 +57,15 @@ def profile(request):
         else:
             form = FormChangeProfile()
     basket = Basket.objects.filter(user=request.user)
+    total_quantity = sum([item.quantity for item in basket])
+    total_sum = sum([item.sum() for item in basket])
     return render(request, 
                   'user/profile.html', 
                   context={
                     'form': form,
                     'basket': basket,
+                    'total_quantity': total_quantity,
+                    'total_sum': total_sum,
     })
     
 def logout(request):
