@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from .forms import FormAuth, FormRegister, FormChangeProfile
 from django.contrib import auth
 from django.urls import reverse
+from catalog.models import Basket
 
 # Create your views here.
 def login(request):
@@ -55,10 +56,12 @@ def profile(request):
             form = FormChangeProfile(instance=request.user)
         else:
             form = FormChangeProfile()
+    basket = Basket.objects.filter(user=request.user)
     return render(request, 
                   'user/profile.html', 
                   context={
-                    'form': form
+                    'form': form,
+                    'basket': basket,
     })
     
 def logout(request):
