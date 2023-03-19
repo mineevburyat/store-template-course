@@ -53,6 +53,13 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+
+class BasketQuerySet(models.QuerySet):
+    def total_quantity(self):
+        return sum([item.quantity for item in self])
+    
+    def total_sum(self):
+        return sum([item.sum() for item in self])
     
 class Basket(models.Model):
     user = models.ForeignKey(User,
@@ -64,6 +71,8 @@ class Basket(models.Model):
     quantity = models.PositiveSmallIntegerField(
         verbose_name='количество',
         default=0)
+    
+    objects = BasketQuerySet.as_manager()
     
     def __str__(self):
         return f"{self.user.username}: {self.product.name} ({self.quantity})"
