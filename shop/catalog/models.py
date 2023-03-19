@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import User
 
 class ProductCategory(models.Model):
     class Meta:
@@ -52,3 +53,22 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+    
+class Basket(models.Model):
+    user = models.ForeignKey(User,
+                             verbose_name='пользователь',
+                             on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,
+                                verbose_name='продукт',
+                                on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(
+        verbose_name='количество',
+        default=0)
+    
+    def __str__(self):
+        return f"{self.user.username}: {self.product.name} ({self.quantity})"
+    
+    def sum(self):
+        return self.product.price * self.quantity
+    
+    
