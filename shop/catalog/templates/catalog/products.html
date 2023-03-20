@@ -15,10 +15,11 @@
             <h1 class="my-4">Store</h1>
             <div class="list-group">
                 {% for item in category %}
-                <a href="#" class="list-group-item">{{ item.name }}</a>
+                <a href={% url 'product:category' item.id %} 
+                class="list-group-item {% if category_id == item.id %} active {% endif %} ">
+                {{ item.name }}</a>
                 {% endfor %}
             </div>
-
         </div>
         <!-- /.col-lg-3 -->
 

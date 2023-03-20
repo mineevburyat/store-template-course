@@ -8,11 +8,17 @@ from user.models import User
 #         'title': 'Store - магазин',
 #     })
 
-def products(request):
+def products(request, category_id=None):
+    if category_id:
+        category = ProductCategory.objects.get(id=category_id)
+        products = Product.objects.filter(category=category)
+    else:
+        products = Product.objects.all()
     return render(request, 'catalog/products.html', context={
         'title': 'Store - продукты',
-        'products': Product.objects.all(),
-        'category': ProductCategory.objects.all()
+        'products': products,
+        'category': ProductCategory.objects.all(),
+        'category_id': category_id
     })
 
 def add_to_basket(request, product_id):
