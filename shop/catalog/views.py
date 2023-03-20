@@ -36,7 +36,6 @@ def add_to_basket(request, product_id):
     product = Product.objects.get(id=product_id)
     basket = Basket.objects.filter(user=user, product=product)
     if basket.exists():
-        print(basket)
         basket = basket.last()
         basket.quantity += 1
         basket.save()
