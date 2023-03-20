@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from .models import Product, ProductCategory, Basket
 from user.models import User
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -10,7 +11,7 @@ from django.core.paginator import Paginator
 #     })
 
 def products(request, category_id=None):
-    PER_PAGE = 6
+    PER_PAGE = 3
     if category_id:
         category = ProductCategory.objects.get(id=category_id)
         products = Product.objects.filter(category=category)
@@ -31,6 +32,7 @@ def products(request, category_id=None):
         'category_id': category_id
     })
 
+@login_required
 def add_to_basket(request, product_id):
     user=request.user
     product = Product.objects.get(id=product_id)
@@ -44,6 +46,7 @@ def add_to_basket(request, product_id):
             Basket.objects.create(user=user, product=product, quantity=1)
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+@login_required
 def remove_from_basket(request, product_id):
     user=request.user
     product = Product.objects.get(id=product_id)
