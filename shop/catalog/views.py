@@ -5,12 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
-
-# Create your views here.
-# def index(request):
-#     return render(request, 'catalog/index.html', context={
-#         'title': 'Store - магазин',
-#     })
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
 
 class ProductsListView(ListView):
     model = Product
@@ -34,6 +30,27 @@ class ProductsListView(ListView):
         context['category_id'] = self.kwargs.get('category_id')
         return context
 
+@login_required
+def add_to_basket(request, product_id):
+    user=request.user
+    product = Product.objects.get(id=product_id)
+    basket = Basket.objects.filter(user=user, product=product)
+    if basket.exists():
+        basket = basket.last()
+        basket.quantity += 1
+        basket.save()
+    else:
+        if product:
+            Basket.objects.create(user=user, product=product, quantity=1)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+@login_required
+def remove_from_basket(request, product_id):
+    user=request.user
+    product = Product.objects.get(id=product_id)
+    Basket.objects.filter(user=user, product=product).delete()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 # def products(request, category_id=None):
 #     PER_PAGE = 3
 #     if category_id:
@@ -55,24 +72,3 @@ class ProductsListView(ListView):
 #         'category': ProductCategory.objects.all(),
 #         'category_id': category_id
 #     })
-
-@login_required
-def add_to_basket(request, product_id):
-    user=request.user
-    product = Product.objects.get(id=product_id)
-    basket = Basket.objects.filter(user=user, product=product)
-    if basket.exists():
-        basket = basket.last()
-        basket.quantity += 1
-        basket.save()
-    else:
-        if product:
-            Basket.objects.create(user=user, product=product, quantity=1)
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
-@login_required
-def remove_from_basket(request, product_id):
-    user=request.user
-    product = Product.objects.get(id=product_id)
-    Basket.objects.filter(user=user, product=product).delete()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
