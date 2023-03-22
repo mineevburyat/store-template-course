@@ -3,35 +3,13 @@ from .forms import FormAuth, FormRegister, FormChangeProfile
 from django.contrib import auth, messages
 from django.urls import reverse
 from catalog.models import Basket
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 
 class AuthView(LoginView):
     template_name = 'user/login.html'
     authentication_form = FormAuth
     next_page = '/'
 
-
-# def login(request):
-#     if request.method == 'POST':
-#         form = FormAuth(data=request.POST)
-#         if form.is_valid():
-#             username = request.POST['username']
-#             password = request.POST['password']
-#             user = auth.authenticate(username=username, password=password)
-#             if user:
-#                 auth.login(request, user)
-#                 return HttpResponseRedirect(reverse('index'))
-#             else:
-#                 print('user not find')
-#         else:
-#             print('login forms not valid')
-#     else:
-#         form = FormAuth()
-#     return render(request, 
-#                   'user/login.html',
-#                   context={
-#                       'form': form,
-#                   })
 
 def register_user(request):
     if request.method == 'POST':
@@ -72,7 +50,7 @@ def profile(request):
                     'form': form,
                     'basket': basket,
     })
+
+class MyLogoutView(LogoutView):
+    pass
     
-def logout(request):
-    auth.logout(request)
-    return HttpResponseRedirect(reverse('index'))
