@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from .forms import FormAuth, FormRegister, FormChangeProfile
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.urls import reverse
 from catalog.models import Basket
 
@@ -31,9 +31,9 @@ def register_user(request):
     if request.method == 'POST':
         form = FormRegister(data=request.POST)
         if form.is_valid():
+            messages.success(request, 'успешно зарегестрировались!')
             form.save()
-        else:
-            print('register form is not valid')
+            HttpResponseRedirect(reverse('user:login'))
     else:
         form = FormRegister()
     return render(request, 
