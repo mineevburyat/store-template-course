@@ -31,10 +31,36 @@ class ProfileEditView(UpdateView):
         return reverse_lazy('user:profile', self.object.id)
     
     def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['basket'] = Basket.objects.filter(user=self.object)
+        return context
 
 
 class MyLogoutView(LogoutView):
     pass
     
+
+def profile(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        form = FormChangeProfile(data=request.POST,
+                                 instance=request.user,
+                                 files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('user:profile'))
+        else:
+            pass
+            # print(form.errors)
+    else:
+        if request.user.is_authenticated:
+            form = FormChangeProfile(instance=request.user)
+        else:
+            form = FormChangeProfile()
+    basket = Basket.objects.filter(user=request.user)
+    
+    return render(request, 
+                  'user/profile.html', 
+                  context={
+                    'form': form,
+                    'basket': basket,
+    })
