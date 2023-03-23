@@ -100,8 +100,7 @@ class FormChangeProfile(UserChangeForm):
         }),
         required=False)
     
-    
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', \
-            'username', 'email', 'image',)
+        fields = ('first_name', 'last_name', 'username', 'email', 'image')
+        

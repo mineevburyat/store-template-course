@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import profile, AuthView, MyLogoutView, RegisterUserView, ProfileEditView
+from .views import AuthView, MyLogoutView, RegisterUserView, ProfileEditView
 
 
 app_name='user'
