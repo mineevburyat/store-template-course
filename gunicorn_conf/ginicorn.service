@@ -1,0 +1,14 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=mineev
+Group=www-data
+WorkingDirectory=/home/mineev/project/shop
+ExecStart=/home/mineev/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          shop.wsgi:application
