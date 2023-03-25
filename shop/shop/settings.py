@@ -5,10 +5,10 @@ import os
 env = environ.Env(
     DEBUG=(bool, True),
     SECRET_KEY=(str, 'django-insecure-dp*hw^h1@**w-#vir436-y)$y&zd*=)3(o0$k56u=_or$$ax7a'),
-    PG_HOST=(str, 'localhost')
-    PG_PORT=(str, '3389')
-    PG_DBNAME= (str, 'shop')
-    PG_USER=(str, 'pguser')
+    PG_HOST=(str, 'localhost'),
+    PG_PORT=(str, '3389'),
+    PG_DBNAME= (str, 'shop'),
+    PG_USER=(str, 'pguser'),
     PG_PASS=(str,'pgUser12345')
 )
 
