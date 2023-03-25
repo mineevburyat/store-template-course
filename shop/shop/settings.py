@@ -9,7 +9,8 @@ env = environ.Env(
     PG_PORT=(str, '3389'),
     PG_DBNAME= (str, 'shop'),
     PG_USER=(str, 'pguser'),
-    PG_PASS=(str,'pgUser12345')
+    PG_PASS=(str,'pgUser12345'),
+    ALLOWED_HOSTS=(list,)
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,11 +20,11 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 if not DEBUG:
-    ALLOWED_HOSTS = ['127.0.0.1']
+    ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['*']
 
-
+print(ALLOWED_HOSTS)
 # Application definition
 
 INSTALLED_APPS = [
