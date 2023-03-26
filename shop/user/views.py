@@ -29,11 +29,6 @@ class ProfileEditView(UpdateView):
     
     def get_success_url(self) -> str:
         return reverse_lazy('user:profile', self.object.id)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['basket'] = Basket.objects.filter(user=self.object)
-        return context
 
 
 class MyLogoutView(LogoutView):
