@@ -28,34 +28,34 @@ class ProfileEditView(UpdateView):
     success_message = 'профиль изменен'
     
     def get_success_url(self) -> str:
-        return reverse_lazy('user:profile', self.object.id)
+        return reverse_lazy('user:profile', kwargs={'pk': self.object.id})
 
 
 class MyLogoutView(LogoutView):
     pass
     
 
-def profile(request):
-    if request.method == 'POST' and request.user.is_authenticated:
-        form = FormChangeProfile(data=request.POST,
-                                 instance=request.user,
-                                 files=request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('user:profile'))
-        else:
-            pass
-            # print(form.errors)
-    else:
-        if request.user.is_authenticated:
-            form = FormChangeProfile(instance=request.user)
-        else:
-            form = FormChangeProfile()
-    basket = Basket.objects.filter(user=request.user)
+# def profile(request):
+#     if request.method == 'POST' and request.user.is_authenticated:
+#         form = FormChangeProfile(data=request.POST,
+#                                  instance=request.user,
+#                                  files=request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('user:profile'))
+#         else:
+#             pass
+#             # print(form.errors)
+#     else:
+#         if request.user.is_authenticated:
+#             form = FormChangeProfile(instance=request.user)
+#         else:
+#             form = FormChangeProfile()
+#     basket = Basket.objects.filter(user=request.user)
     
-    return render(request, 
-                  'user/profile.html', 
-                  context={
-                    'form': form,
-                    'basket': basket,
-    })
+#     return render(request, 
+#                   'user/profile.html', 
+#                   context={
+#                     'form': form,
+#                     'basket': basket,
+#     })
