@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # загрузить переменные либо с переменных среды либо с файла .env
 # если нет ни того не другого, то значениями по умолчанию
 env = environ.Env()
-env.read_env(env.str('ENV_PATH', os.path.join(BASE_DIR, '.env')))
+env.read_env(env.str('ENV_PATH', BASE_DIR / '.env'))
 # from django.core.management.utils import get_random_secret_key 
 # get_random_secret_key()
 SECRET_KEY = env.get_value('SECRET_KEY',
@@ -15,7 +15,7 @@ SECRET_KEY = env.get_value('SECRET_KEY',
 DEBUG = env.get_value('DEBUG',
                       cast=bool,
                       default=True)
-
+NO_DB = os.environ.get('NO_DB', None)
 if not DEBUG:
     ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 else:
@@ -68,7 +68,7 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-if DEBUG:
+if DEBUG or NO_DB:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -85,11 +85,11 @@ else:
     #         },
     #     }
     # }
-    PG_HOST = env('PG_HOST')
-    PG_PORT = env('PG_PORT')
-    PG_DBNAME = env('PG_DBNAME')
-    PG_USER = env('PG_USER')
-    PG_PASS = env('PG_PASS')
+    PG_HOST = env('PG_HOST', default='localhost')
+    PG_PORT = env('PG_PORT', default='5432')
+    PG_DBNAME = env('PG_DBNAME', default='project_db_sheme')
+    PG_USER = env('PG_USER', default='pg_user')
+    PG_PASS = env('PG_PASS', default='pg_pass')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -100,7 +100,6 @@ else:
             'PORT': PG_PORT,
         }
     }  
-
 
 
 # Password validation
