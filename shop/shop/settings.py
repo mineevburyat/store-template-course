@@ -2,29 +2,25 @@ from pathlib import Path
 import environ
 import os
 
-env = environ.Env(
-    DEBUG=(bool, True),
-    SECRET_KEY=(str, 'django-insecure-dp*hw^h1@**w-#vir436-y)$y&zd*=)3(o0$k56u=_or$$ax7a'),
-    PG_HOST=(str, 'localhost'),
-    PG_PORT=(str, '3389'),
-    PG_DBNAME= (str, 'shop'),
-    PG_USER=(str, 'pguser'),
-    PG_PASS=(str,'pgUser12345'),
-    ALLOWED_HOSTS=(list,)
-)
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
-SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG')
+# загрузить переменные либо с переменных среды либо с файла .env
+# если нет ни того не другого, то значениями по умолчанию
+env = environ.Env()
+env.read_env(env.str('ENV_PATH', os.path.join(BASE_DIR, '.env')))
+# from django.core.management.utils import get_random_secret_key 
+# get_random_secret_key()
+SECRET_KEY = env.get_value('SECRET_KEY',
+                           cast=str,
+                           default='django-insecure-dp*hw^h1@**w-#vir436-y)$y&zd*=)3(o0$k56u=_or$$ax7a')
+DEBUG = env.get_value('DEBUG',
+                      cast=bool,
+                      default=True)
 
 if not DEBUG:
     ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 else:
     ALLOWED_HOSTS = ['*']
 
-print(ALLOWED_HOSTS)
 # Application definition
 
 INSTALLED_APPS = [
@@ -102,7 +98,7 @@ else:
             'HOST': PG_HOST,
             'PORT': PG_PORT,
         }
-    }   
+    }  
 
 
 
@@ -148,8 +144,8 @@ if not DEBUG:
     STATIC_ROOT = BASE_DIR / 'static'
 else:
     STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
+        BASE_DIR / 'static',
+        )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
