@@ -1,17 +1,7 @@
-from django.shortcuts import render
 from django.views.generic.base import TemplateView
+from common.mixins import TitleMixin
 
 
-class IndexView(TemplateView):
+class IndexView(TitleMixin, TemplateView):
     template_name = 'catalog/index.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Магазин Store'
-        return context
-    
-# # Create your views here.
-# def index(request):
-#     return render(request, 'catalog/index.html', context={
-#         'title': 'Store - магазин',
-#     })
+    title = "Магазин Store - главная"
