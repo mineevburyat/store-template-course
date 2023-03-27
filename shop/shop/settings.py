@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # если нет ни того не другого, то значениями по умолчанию
 env = environ.Env()
 env.read_env(env.str('ENV_PATH', BASE_DIR / '.env'))
-# from django.core.management.utils import get_random_secret_key 
+# from django.core.management.utils import get_random_secret_key
 # get_random_secret_key()
 SECRET_KEY = env.get_value('SECRET_KEY',
                            cast=str,
@@ -16,6 +16,10 @@ DEBUG = env.get_value('DEBUG',
                       cast=bool,
                       default=True)
 NO_DB = os.environ.get('NO_DB', None)
+
+DOMAIN_LINK = env.get_value('DOMAIN_NAME',
+                            default='http://127.0.0.1:8000')
+
 if not DEBUG:
     ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 else:
@@ -99,8 +103,7 @@ else:
             'HOST': PG_HOST,
             'PORT': PG_PORT,
         }
-    }  
-
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -159,3 +162,15 @@ AUTH_USER_MODEL = 'user.User'
 LOGIN_URL = '/user/login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = env.get_value('EMAIL_HOST', default='localhost')
+    EMAIL_PORT = env.get_value('EMAIL_PORT', default='8025')
+    EMAIL_HOST_USER = env.get_value('EMAIL_HOST_USER', default='user')
+    EMAIL_HOST_PASSWORD = env.get_value('EMAIL_HOST_PASSWORD', default='userpass')
+    EMAIL_USE_TLS = env.get_value('EMAIL_USE_TLS', default=True)
+# houres
+EXPIRATION_VERIFIED = 48

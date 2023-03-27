@@ -3,12 +3,17 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 # from django.shortcuts import HttpResponseRedirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
+from django.shortcuts import get_object_or_404, HttpResponseRedirect
 
 from .forms import FormAuth, FormChangeProfile, FormRegister
-from .models import User
+from .models import User, VerifideUser
 from common.mixins import TitleMixin
+
+from django.utils.timezone import now
 
 
 class AuthView(TitleMixin, LoginView):
@@ -40,3 +45,32 @@ class ProfileEditView(TitleMixin, UpdateView):
 
 class MyLogoutView(LogoutView):
     pass
+
+
+class VerificationView(TitleMixin, TemplateView):
+    template_name = 'user/email_verification.html'
+    title = 'Магазин Store - верефицирован'
+
+    # TODO send message error on index page
+    def get(self, request, *args, **kwargs):
+        email = kwargs.get('email', '')
+        uuid_str = kwargs.get('code', '')
+        # try:
+        #     code = uuid.UUID(uuid_str)
+        # except ValueError:
+        #     # return HttpResponseNotFound('uuid is not valide')
+        #     return HttpResponseRedirect(reverse('index'))
+        # ставь в urls uuid и проверять не придется, не найдет на этапе маршрутизации
+        user = get_object_or_404(User, email=email)
+        record = VerifideUser.objects.filter(user=user, code=uuid_str).last()
+        if record:
+            if record.expiration > now():
+                user.is_verified_email = True
+                user.save()
+                # record.delete()
+                return super().get(request, *args, **kwargs)
+            else:
+                print('time out')
+        else:
+            print('uuid not found')
+        return HttpResponseRedirect(reverse('index'))
