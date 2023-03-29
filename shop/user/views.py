@@ -61,7 +61,9 @@ class VerificationView(TitleMixin, TemplateView):
         #     # return HttpResponseNotFound('uuid is not valide')
         #     return HttpResponseRedirect(reverse('index'))
         # ставь в urls uuid и проверять не придется, не найдет на этапе маршрутизации
-        user = get_object_or_404(User, email=email)
+        users = User.objects.filter(email=email)
+        if users.exists():
+            user = users.last()
         record = VerifideUser.objects.filter(user=user, code=uuid_str).last()
         if record:
             if record.expiration > now():
