@@ -171,6 +171,7 @@ else:
     EMAIL_PORT = env.get_value('EMAIL_PORT', default='8025')
     EMAIL_HOST_USER = env.get_value('EMAIL_HOST_USER', default='user')
     EMAIL_HOST_PASSWORD = env.get_value('EMAIL_HOST_PASSWORD', default='userpass')
-    EMAIL_USE_TLS = env.get_value('EMAIL_USE_TLS', default=True)
+    EMAIL_USE_SSL = env.get_value('EMAIL_USE_SSL', default=True)
+    EMAIL_FROM = env.get_value('EMAIL_FROM', default='alex@mineev03.ru')
 # houres
 EXPIRATION_VERIFIED = 48
