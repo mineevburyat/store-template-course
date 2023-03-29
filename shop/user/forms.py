@@ -91,7 +91,7 @@ class FormRegister(UserCreationForm):
         send_mail(
             'Верификация email на сайте Магазин Store',
             message,
-            'robot@mineev03.ru',
+            settings.EMAIL_FROM,
             [user.email],
             fail_silently=False)
         return user

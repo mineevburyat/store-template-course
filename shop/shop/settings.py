@@ -17,7 +17,7 @@ DEBUG = env.get_value('DEBUG',
                       default=True)
 NO_DB = os.environ.get('NO_DB', None)
 
-DOMAIN_LINK = env.get_value('DOMAIN_NAME',
+DOMAIN_LINK = env.get_value('DOMAIN_LINK',
                             default='http://127.0.0.1:8000')
 
 if not DEBUG:
@@ -163,15 +163,15 @@ LOGIN_URL = '/user/login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = env.get_value('EMAIL_HOST', default='localhost')
-    EMAIL_PORT = env.get_value('EMAIL_PORT', default='8025')
-    EMAIL_HOST_USER = env.get_value('EMAIL_HOST_USER', default='user')
-    EMAIL_HOST_PASSWORD = env.get_value('EMAIL_HOST_PASSWORD', default='userpass')
-    EMAIL_USE_SSL = env.get_value('EMAIL_USE_SSL', default=True)
-    EMAIL_FROM = env.get_value('EMAIL_FROM', default='alex@mineev03.ru')
+# if DEBUG:
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# else:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env.get_value('EMAIL_HOST', default='localhost')
+EMAIL_PORT = env.get_value('EMAIL_PORT', default='8025')
+EMAIL_HOST_USER = env.get_value('EMAIL_HOST_USER', default='user')
+EMAIL_HOST_PASSWORD = env.get_value('EMAIL_HOST_PASSWORD', default='userpass')
+EMAIL_USE_SSL = env.get_value('EMAIL_USE_SSL', default=True)
+EMAIL_FROM = env.get_value('EMAIL_FROM', default='robot@mineev03.ru')
 # houres
 EXPIRATION_VERIFIED = 48
