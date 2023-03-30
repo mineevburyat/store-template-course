@@ -33,7 +33,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
     'catalog',
     'user',
 ]
@@ -175,3 +180,20 @@ EMAIL_USE_SSL = env.get_value('EMAIL_USE_SSL', default=True)
 EMAIL_FROM = env.get_value('EMAIL_FROM', default='robot@mineev03.ru')
 # houres
 EXPIRATION_VERIFIED = 48
+
+
+# OAuth
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+SITE_ID = 2
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+        ],
+    }
+}
